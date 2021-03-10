@@ -1,0 +1,15 @@
+// Pirlog Patricia-Claudia 322CC
+
+1. Pentru primul tip de instructiuni, am calculat solutia folosindu-ma de formula nrBancnote * 2 ^ N-1 avand in vedere ca dupa fiecare bancnota pot urma doar alte 2 bancnote(combinari de 2 bancnote luate cate 1 = 2). Pentru formula, am folosit o functie auxiliara exponent, ce imi calculeaza ridicarea la putere a 2 nr, modularizata[1], pentru a avea o complexitate temporala mai mica, O(logn). Pentru cel de-al doilea tip de instructiuni, am folosit programare dinamica. Am folosit o matrice dp[nr_bancnote + 1][N + 1]. Am construit pentru fiecare tip de bancnota dp[i][j], luand in considerare pasul anterior j-1(bancnote aranjate) pentru ce tipuri de bancnote pot fi inainte de bancnota i(ex: inainte de bancnota 50 pot fi bancnotele 10 si 200). Rezultatul final va fi dp[nrbancnote][N] format din suma dp[i][N-1] cu i = 0 .. 4. 
+T = O(log N) primul tip
+T = S = O(nr_bancnote * N) al doilea tip
+
+2. Am folosit o clasa Pair pentru a retine capetele gardurilor si un Vector vect pentru a le retine in ordinea citita. Am utilizat un Comparator si Collections.sort() de complexitate O(N * logN) pentru a le sorta crescator in functie de xStart, iar daca xStart de la 2 bucati erau egale, descrescator in functie de xEnd. La un anumit moment de timp i, xStart va fi mereu cel mai mic posibil(fiind sortate crescator) iar xEnd cel mai mare posibil. xEnd cel mai mare il retin in variabila max. Daca o bucata are xEnd mai mica decat maximul posibil atunci e redundanta si se creste contorul, atlfel max se actualizeaza la noua valoare.
+T = O(N) pt parcurgerea tuturor perechilor
+S = O(N)
+
+3. Am folosit clasa Pair pt a retine intervalele pt fiecare elev. In variabila sum retin suma Yi-urilor pt toate intervalele. Daca sum < 0, nu exista posibilitatea de a imparti toate bomboanele elevilor. Daca sum = M, atunci exista o posibilitate, dand fiecarui elev maximul din intervalul sau. Pentru cazul cand sum > M am folosit programare dinamica. Folosesc o matrice dp[N+1][M+1] unde dp[i][j] reprezinta modul in care pot imparti la i elevi j bomboane. Pt a calcula nr de bomboane necesare la pasul curent, imi calculez intervalul in functie de j (nr de bomboane) si intervalul elevului curent. Start este dat de j - Xi iar finish de j - Yi. Daca start < 0, se elimina aceste cazuri deoarece nr de bomboane nu se afla in [Xi, Yi] si se trece la pasul urmator. Daca finish < 0, se transorma in 0 pt a nu parcurge indici negativi. Se va genera 0 pe pozitiile unde nu se poate forma suma j pana la pasul resp. Astfel solutia cand vreau sa impart unui nr i de elevi j bomboane trebuie sa tina cont de toate modurile in care am impartit la i-1 elevi k bomboane(k = [start .. finish]), de cate bomboane am in intervalul elevului curent deci sa iau in considerare toate posibilitatile pentru a forma nr de bomboane j. Rezultatul e in dp[N][M].
+T = O(N) pt sum <= M iar in rest
+T = O(N*M*k), unde k e variabil in functie de interval iar S = O(N * M)
+
+[1] https://en.wikipedia.org/wiki/Modular_exponentiation
